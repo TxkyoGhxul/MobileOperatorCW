@@ -1,0 +1,26 @@
+﻿@using Domain
+
+@model IEnumerable<TariffType>
+
+@{
+    ViewData["Title"] = "All users";
+}
+
+<h1>Tariff types</h1>
+
+<table>
+
+    <tr>
+        <td>Id</td>
+        <td>Tariff</td>
+    </tr>
+
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.Name</td>
+        </tr>
+    }
+
+</table>
