@@ -38,8 +38,8 @@ internal class Program
 
     private static void Task(DbContextOptions<ApplicationDbContext> options)
     {
-        var smss = new SMSRepository(new ApplicationDbContext(options)).SelectAll().Take(10);
         var contracts = new ContractRepository(new ApplicationDbContext(options)).SelectAll().Take(10);
+        var smss = new SMSRepository(new ApplicationDbContext(options)).SelectAll().Take(10);
         var employees = new EmployeeRepository(new ApplicationDbContext(options)).SelectAll().Take(10);
         var inttraffs = new InternetTrafficRepository(new ApplicationDbContext(options)).SelectAll().Take(10);
         var positions = new PositionRepository(new ApplicationDbContext(options)).SelectAll().Take(10);
