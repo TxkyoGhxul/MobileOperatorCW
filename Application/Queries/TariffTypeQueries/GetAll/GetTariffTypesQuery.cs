@@ -1,5 +1,6 @@
-﻿using Domain;
+﻿using Application.Interfaces;
+using Domain;
 using MediatR;
 
 namespace Application.Queries.TariffTypeQueries.GetAll;
-public record GetTariffTypesQuery : IRequest<IEnumerable<TariffType>>;
+public record GetTariffTypesQuery : IRequest<IResponse<IEnumerable<TariffType>>>;

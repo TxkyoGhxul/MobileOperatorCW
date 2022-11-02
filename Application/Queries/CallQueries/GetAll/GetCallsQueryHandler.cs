@@ -4,13 +4,16 @@ using MediatR;
 
 namespace Application.Queries.CallQueries.GetAll;
 
-public class GetCallsQueryHandler : IRequestHandler<GetCallsQuery, IEnumerable<Call>>
+public class GetCallsQueryHandler : IRequestHandler<GetCallsQuery, IResponse<IEnumerable<Call>>>
 {
     private readonly IFullRepository<Call> _repository;
 
     public GetCallsQueryHandler(IFullRepository<Call> repository) =>
         _repository = repository;
 
-    public async Task<IEnumerable<Call>> Handle(GetCallsQuery request, CancellationToken cancellationToken) => 
-        await _repository.SelectAllAsync(cancellationToken);
+    public async Task<IResponse<IEnumerable<Call>>> Handle(GetCallsQuery request, 
+        CancellationToken ct)
+    {
+        return await _repository.SelectAllAsync(ct);
+    }
 }

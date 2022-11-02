@@ -4,13 +4,15 @@ using MediatR;
 
 namespace Application.Queries.TariffQueries.GetById;
 
-public class GetTariffByIdQueryHandler : IRequestHandler<GetTariffByIdQuery, Tariff>
+public class GetTariffByIdQueryHandler : IRequestHandler<GetTariffByIdQuery, IResponse<Tariff>>
 {
     private readonly IFullRepository<Tariff> _repository;
 
     public GetTariffByIdQueryHandler(IFullRepository<Tariff> repository) =>
         _repository = repository;
 
-    public async Task<Tariff> Handle(GetTariffByIdQuery request, CancellationToken cancellationToken) => 
-        await _repository.SelectByIdAsync(request.Id, cancellationToken);
+    public async Task<IResponse<Tariff>> Handle(GetTariffByIdQuery request, CancellationToken ct)
+    {
+        return await _repository.SelectByIdAsync(request.Id, ct);
+    }
 }
