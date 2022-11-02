@@ -24,8 +24,10 @@ public class UserController : Controller
     public async Task<IActionResult> TariffTypes()
     {
         var query = new GetTariffTypesQuery();
-        var result = await _mediator.Send(query);
-        return View(result);
+        var response = await _mediator.Send(query);
+
+        return response.StatusCode != StatusCode.Ok ? 
+            BadRequest(response.Description) : View(response.Data);
     }
 
     [HttpGet]

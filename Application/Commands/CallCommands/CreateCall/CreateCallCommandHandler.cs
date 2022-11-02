@@ -1,25 +1,30 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Mappers;
+using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
 namespace Application.Commands.CallCommands.CreateCall;
 
-public class CreateCallCommandHandler : IRequestHandler<CreateCallCommand, Guid>
+public class CreateCallCommandHandler : IRequestHandler<CreateCallCommand, IResponse<Guid>>
 {
     private readonly IFullRepository<Call> _repository;
 
     public CreateCallCommandHandler(IFullRepository<Call> repository) => _repository = repository;
 
-    public async Task<Guid> Handle(CreateCallCommand request, CancellationToken cancellationToken)
+    public async Task<IResponse<Guid>> Handle(CreateCallCommand request, CancellationToken cancellationToken)
     {
-        var call = new Call
+        try
         {
-            Id = Guid.NewGuid(),
-            Contract = request.Contract,
-            Date = request.Date,
-            TimeSpan = request.TimeSpan
-        };
+            var call = request.ToDomain();
 
-        return await _repository.InsertAsync(call, cancellationToken);
+            var response = await _repository.InsertAsync(call, cancellationToken);
+
+            return new Response<Guid>(response, StatusCode.Created);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Guid>(ex.Message, StatusCode.NotCreated);
+        }
     }
 }

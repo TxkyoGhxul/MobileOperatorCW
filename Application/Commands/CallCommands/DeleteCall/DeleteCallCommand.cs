@@ -1,5 +1,6 @@
-﻿using MediatR;
+﻿using Application.Interfaces;
+using MediatR;
 
 namespace Application.Commands.CallCommands.DeleteCall;
 
-public record DeleteCallCommand(Guid Id) : IRequest;
+public record DeleteCallCommand(Guid Id) : IRequest<IResponse<Unit>>;

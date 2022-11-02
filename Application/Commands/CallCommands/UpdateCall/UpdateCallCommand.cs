@@ -1,6 +1,7 @@
-﻿using Domain;
+﻿using Application.Interfaces;
 using MediatR;
 
 namespace Application.Commands.CallCommands.UpdateCall;
 
-public record UpdateCallCommand(Guid Id, Contract Contract, TimeSpan TimeSpan, DateTime Date) : IRequest;
+public record UpdateCallCommand(Guid Id, Guid ContractId, TimeSpan TimeSpan, DateTime Date)
+    : IRequest<IResponse<Unit>>;
