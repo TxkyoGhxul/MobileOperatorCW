@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -12,6 +13,15 @@ public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, IResponse<IEn
     public async Task<IResponse<IEnumerable<User>>> Handle(GetUsersQuery request,
         CancellationToken cancellationToken)
     {
-        return await _repository.SelectAllAsync(cancellationToken);
+        try
+        {
+            var response = await _repository.SelectAllAsync(cancellationToken);
+
+            return new Response<IEnumerable<User>>(response);
+        }
+        catch (Exception ex)
+        {
+            return new Response<IEnumerable<User>>(ex.Message);
+        }
     }
 }

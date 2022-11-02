@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -14,6 +15,15 @@ public class GetSMSByIdQueryHandler : IRequestHandler<GetSMSByIdQuery, IResponse
     public async Task<IResponse<SMS>> Handle(GetSMSByIdQuery request,
         CancellationToken cancellationToken)
     {
-        return await _repository.SelectByIdAsync(request.Id, cancellationToken);
+        try
+        {
+            var response = await _repository.SelectByIdAsync(request.Id, cancellationToken);
+
+            return new Response<SMS>(response);
+        }
+        catch (Exception ex)
+        {
+            return new Response<SMS>(ex.Message);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -11,6 +12,15 @@ public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, IRespon
 
     public async Task<IResponse<User>> Handle(GetUserByIdQuery request, CancellationToken ct)
     {
-        return await _repository.SelectByIdAsync(request.Id, ct);
+        try
+        {
+            var response = await _repository.SelectByIdAsync(request.Id, ct);
+
+            return new Response<User>(response);
+        }
+        catch (Exception ex)
+        {
+            return new Response<User>(ex.Message);
+        }
     }
 }

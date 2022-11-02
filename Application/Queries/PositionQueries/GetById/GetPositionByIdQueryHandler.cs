@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -14,6 +15,15 @@ public class GetPositionByIdQueryHandler :
     public async Task<IResponse<Position>> Handle(GetPositionByIdQuery request, 
         CancellationToken cancellationToken)
     {
-        return await _repository.SelectByIdAsync(request.Id, cancellationToken);
+        try
+        {
+            var response = await _repository.SelectByIdAsync(request.Id, cancellationToken);
+
+            return new Response<Position>(response);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Position>(ex.Message);
+        }
     }
 }

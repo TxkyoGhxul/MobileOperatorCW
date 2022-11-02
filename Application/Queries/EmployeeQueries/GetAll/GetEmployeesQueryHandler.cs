@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -15,6 +16,15 @@ public class GetEmployeesQueryHandler :
     public async Task<IResponse<IEnumerable<Employee>>> Handle(GetEmployeesQuery request,
         CancellationToken cancellationToken)
     {
-        return await _repository.SelectAllAsync(cancellationToken);
+        try
+        {
+            var response = await _repository.SelectAllAsync(cancellationToken);
+
+            return new Response<IEnumerable<Employee>>(response);
+        }
+        catch (Exception ex)
+        {
+            return new Response<IEnumerable<Employee>>(ex.Message);
+        }
     }
 }

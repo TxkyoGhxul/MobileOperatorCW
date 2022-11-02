@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -14,6 +15,15 @@ public class GetSMSsQueryHandler : IRequestHandler<GetSMSsQuery, IResponse<IEnum
     public async Task<IResponse<IEnumerable<SMS>>> Handle(GetSMSsQuery request,
         CancellationToken cancellationToken)
     {
-        return await _repository.SelectAllAsync(cancellationToken);
+        try
+        {
+            var response = await _repository.SelectAllAsync(cancellationToken);
+
+            return new Response<IEnumerable<SMS>>(response);
+        }
+        catch (Exception ex)
+        {
+            return new Response<IEnumerable<SMS>>(ex.Message);
+        }
     }
 }

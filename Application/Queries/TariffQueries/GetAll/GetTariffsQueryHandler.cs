@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -15,6 +16,15 @@ public class GetTariffsQueryHandler :
     public async Task<IResponse<IEnumerable<Tariff>>> Handle(GetTariffsQuery request,
         CancellationToken cancellationToken)
     {
-        return await _repository.SelectAllAsync(cancellationToken);
+        try
+        {
+            var response = await _repository.SelectAllAsync(cancellationToken);
+
+            return new Response<IEnumerable<Tariff>>(response);
+        }
+        catch (Exception ex)
+        {
+            return new Response<IEnumerable<Tariff>>(ex.Message);
+        }
     }
 }

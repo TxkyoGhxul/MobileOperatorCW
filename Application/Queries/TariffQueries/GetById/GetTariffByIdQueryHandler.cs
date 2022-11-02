@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -13,6 +14,15 @@ public class GetTariffByIdQueryHandler : IRequestHandler<GetTariffByIdQuery, IRe
 
     public async Task<IResponse<Tariff>> Handle(GetTariffByIdQuery request, CancellationToken ct)
     {
-        return await _repository.SelectByIdAsync(request.Id, ct);
+        try
+        {
+            var response = await _repository.SelectByIdAsync(request.Id, ct);
+
+            return new Response<Tariff>(response);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Tariff>(ex.Message);
+        }
     }
 }

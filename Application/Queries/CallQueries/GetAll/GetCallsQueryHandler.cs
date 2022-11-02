@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -14,6 +15,15 @@ public class GetCallsQueryHandler : IRequestHandler<GetCallsQuery, IResponse<IEn
     public async Task<IResponse<IEnumerable<Call>>> Handle(GetCallsQuery request, 
         CancellationToken ct)
     {
-        return await _repository.SelectAllAsync(ct);
+        try
+        {
+            var response = await _repository.SelectAllAsync(ct);
+
+            return new Response<IEnumerable<Call>>(response);
+        }
+        catch (Exception ex)
+        {
+            return new Response<IEnumerable<Call>>(ex.Message);
+        }
     }
 }

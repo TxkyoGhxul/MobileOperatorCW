@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -13,6 +14,15 @@ public class GetCallByIdQueryHandler : IRequestHandler<GetCallByIdQuery, IRespon
 
     public async Task<IResponse<Call>> Handle(GetCallByIdQuery request, CancellationToken cancellationToken)
     {
-        return await _repository.SelectByIdAsync(request.Id, cancellationToken);
+        try
+        {
+            var response = await _repository.SelectByIdAsync(request.Id, cancellationToken);
+
+            return new Response<Call>(response);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Call>(ex.Message);
+        }
     }
 }
