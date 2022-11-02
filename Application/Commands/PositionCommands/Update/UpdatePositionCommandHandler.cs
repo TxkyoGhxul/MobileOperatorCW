@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Mappers;
+using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -14,15 +16,17 @@ public class UpdatePositionCommandHandler :
 
     public async Task<IResponse<Unit>> Handle(UpdatePositionCommand request, CancellationToken cancellationToken)
     {
-        Position position = new Position
+        try
         {
-            Id = request.Id,
-            Name = request.Name,
-            Salary = request.Salarys
-        };
+            var position = request.ToDomain();
 
-        await _repository.UpdateAsync(position, cancellationToken);
+            await _repository.UpdateAsync(position, cancellationToken);
 
-        return Unit.Value;
+            return new Response<Unit>(Unit.Value, StatusCode.Updated);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Unit>(ex.Message, StatusCode.NotUpdated);
+        }
     }
 }

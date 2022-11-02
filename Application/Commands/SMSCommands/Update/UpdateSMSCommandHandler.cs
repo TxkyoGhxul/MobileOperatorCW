@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Mappers;
+using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -13,15 +15,17 @@ public class UpdateSMSCommandHandler : IRequestHandler<UpdateSMSCommand, IRespon
 
     public async Task<IResponse<Unit>> Handle(UpdateSMSCommand request, CancellationToken cancellationToken)
     {
-        SMS sms = new SMS
+        try
         {
-            Id = request.Id,
-            Message = request.Message,
-            ContractId = request.ContractId
-        };
+            var sms = request.ToDomain();
 
-        await _repository.UpdateAsync(sms, cancellationToken);
+            await _repository.UpdateAsync(sms, cancellationToken);
 
-        return Unit.Value;
+            return new Response<Unit>(Unit.Value, StatusCode.Updated);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Unit>(ex.Message, StatusCode.NotUpdated);
+        }
     }
 }

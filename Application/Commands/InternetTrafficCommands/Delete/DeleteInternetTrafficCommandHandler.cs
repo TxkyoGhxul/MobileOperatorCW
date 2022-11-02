@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -12,10 +13,18 @@ public class DeleteInternetTrafficCommandHandler :
     public DeleteInternetTrafficCommandHandler(IFullRepository<InternetTraffic> repository) =>
         _repository = repository;
 
-    public async Task<IResponse<Unit>> Handle(DeleteInternetTrafficCommand request, CancellationToken cancellationToken)
+    public async Task<IResponse<Unit>> Handle(DeleteInternetTrafficCommand request, 
+        CancellationToken cancellationToken)
 	{
-		await _repository.DeleteAsync(request.Id, cancellationToken);
+        try
+        {
+		    await _repository.DeleteAsync(request.Id, cancellationToken);
 
-		return Unit.Value;
+            return new Response<Unit>(Unit.Value, StatusCode.Deleted);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Unit>(ex.Message, StatusCode.NotDeleted);
+        }
 	}
 }

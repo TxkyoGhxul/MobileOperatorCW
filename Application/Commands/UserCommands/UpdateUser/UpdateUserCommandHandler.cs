@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Mappers;
+using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -11,18 +13,17 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, IResp
 
     public async Task<IResponse<Unit>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        User user = new User
+        try
         {
-            Id = request.Id,
-            Name = request.Name,
-            Surname = request.Surname,
-            MiddleName = request.MiddleName,
-            Adress = request.Adress,
-            Passport = request.Passport
-        };
+            var user = request.ToDomain();
 
-        await _repository.UpdateAsync(user, cancellationToken);
+            await _repository.UpdateAsync(user, cancellationToken);
 
-        return Unit.Value;
+            return new Response<Unit>(Unit.Value, StatusCode.Updated);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Unit>(ex.Message, StatusCode.NotUpdated);
+        }
     }
 }

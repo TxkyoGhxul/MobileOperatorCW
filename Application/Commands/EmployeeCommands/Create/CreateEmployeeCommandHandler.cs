@@ -1,10 +1,10 @@
 ﻿using Application.Common.Mappers;
+using Application.Common.Responses;
 using Application.Interfaces;
 using Domain;
 using MediatR;
 
 namespace Application.Commands.EmployeeCommands.Create;
-
 public class CreateEmployeeCommandHandler : 
     IRequestHandler<CreateEmployeeCommand, IResponse<Guid>>
 {
@@ -15,8 +15,17 @@ public class CreateEmployeeCommandHandler :
 
     public async Task<IResponse<Guid>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
-        var employee = request.ToDomain();
+        try
+        {
+            var employee = request.ToDomain();
 
-        return await _repository.InsertAsync(employee, cancellationToken);
+            var response = await _repository.InsertAsync(employee, cancellationToken);
+
+            return new Response<Guid>(response, StatusCode.Created);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Guid>(ex.Message, StatusCode.NotCreated);
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Mappers;
+using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -12,15 +14,19 @@ public class CreatePositionCommandHandler :
     public CreatePositionCommandHandler(IFullRepository<Position> repository) =>
         _repository = repository;
 
-    public async Task<Guid> Handle(CreatePositionCommand request, CancellationToken cancellationToken)
+    public async Task<IResponse<Guid>> Handle(CreatePositionCommand request, CancellationToken cancellationToken)
     {
-        Position position = new Position
+        try
         {
-            Id = Guid.NewGuid(),
-            Name = request.Name,
-            Salary = request.Salary
-        };
+            var position = request.ToDomain();
 
-        return await _repository.InsertAsync(position, cancellationToken);
+            var response = await _repository.InsertAsync(position, cancellationToken);
+
+            return new Response<Guid>(response, StatusCode.Created);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Guid>(ex.Message, StatusCode.NotCreated);
+        }
     }
 }

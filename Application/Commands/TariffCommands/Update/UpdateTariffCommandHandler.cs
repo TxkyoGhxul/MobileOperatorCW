@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Mappers;
+using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -13,21 +15,17 @@ public class UpdateTariffCommandHandler : IRequestHandler<UpdateTariffCommand, I
 
     public async Task<IResponse<Unit>> Handle(UpdateTariffCommand request, CancellationToken cancellationToken)
     {
-        Tariff tariff = new Tariff
+        try
         {
-            Id = request.Id,
-            Name = request.Name,
-            Cost = request.Cost,
-            LocalCost = request.LocalCost,
-            TownCost = request.TownCost,
-            CountryCost = request.CountryCost,
-            SMSCost = request.SMSCost,
-            MbCost = request.MbCost,
-            TariffTypeId = request.TariffTypeId
-        };
+            var tariff = request.ToDomain();
 
-        await _repository.UpdateAsync(tariff, cancellationToken);
+            await _repository.UpdateAsync(tariff, cancellationToken);
 
-        return Unit.Value;
+            return new Response<Unit>(Unit.Value, StatusCode.Updated);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Unit>(ex.Message, StatusCode.NotUpdated);
+        }
     }
 }

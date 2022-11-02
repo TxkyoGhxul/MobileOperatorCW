@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -12,10 +13,17 @@ public class DeletePositionCommandHandler :
     public DeletePositionCommandHandler(IFullRepository<Position> repository) =>
         _repository = repository;
 
-    public async Task<Unit> Handle(DeletePositionCommand request, CancellationToken cancellationToken)
+    public async Task<IResponse<Unit>> Handle(DeletePositionCommand request, CancellationToken cancellationToken)
     {
-        await _repository.DeleteAsync(request.Id, cancellationToken);
+        try
+        {
+            await _repository.DeleteAsync(request.Id, cancellationToken);
 
-        return Unit.Value;
+            return new Response<Unit>(Unit.Value, StatusCode.Deleted);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Unit>(ex.Message, StatusCode.NotDeleted);
+        }
     }
 }

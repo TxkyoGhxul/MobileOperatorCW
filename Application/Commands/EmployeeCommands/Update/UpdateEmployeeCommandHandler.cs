@@ -1,4 +1,5 @@
 ﻿using Application.Common.Mappers;
+using Application.Common.Responses;
 using Application.Interfaces;
 using Domain;
 using MediatR;
@@ -14,10 +15,17 @@ public class UpdateEmployeeCommandHandler :
 
     public async Task<IResponse<Unit>> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
     {
-        var employee = request.ToDomain();
+        try
+        {
+            var employee = request.ToDomain();
 
-        await _repository.UpdateAsync(employee, cancellationToken);
+            await _repository.UpdateAsync(employee, cancellationToken);
 
-        return Unit.Value;
+            return new Response<Unit>(Unit.Value, StatusCode.Updated);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Unit>(ex.Message, StatusCode.NotUpdated);
+        }
     }
 }

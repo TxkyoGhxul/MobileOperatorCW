@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Mappers;
+using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -13,19 +15,17 @@ public class CreateTariffCommandHandler : IRequestHandler<CreateTariffCommand, I
 
     public async Task<IResponse<Guid>> Handle(CreateTariffCommand request, CancellationToken cancellationToken)
     {
-        Tariff tariff = new Tariff
+        try
         {
-            Id = Guid.NewGuid(),
-            Name = request.Name,
-            Cost = request.Cost,
-            LocalCost = request.LocalCost,
-            TownCost = request.TownCost,
-            CountryCost = request.CountryCost,
-            SMSCost = request.SMSCost,
-            MbCost = request.MbCost,
-            TariffTypeId = request.TariffTypeId
-        };
+            var tariff = request.ToDomain();
 
-        return await _repository.InsertAsync(tariff, cancellationToken);
+            var response = await _repository.InsertAsync(tariff, cancellationToken);
+
+            return new Response<Guid>(response, StatusCode.Created);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Guid>(ex.Message, StatusCode.NotCreated);
+        }
     }
 }

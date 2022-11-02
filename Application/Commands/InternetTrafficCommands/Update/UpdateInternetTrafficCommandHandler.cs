@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Mappers;
+using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -14,16 +16,17 @@ public class UpdateInternetTrafficCommandHandler :
 
     public async Task<IResponse<Unit>> Handle(UpdateInternetTrafficCommand request, CancellationToken cancellationToken)
     {
-        InternetTraffic traffic = new InternetTraffic
+        try
         {
-            Id = request.Id,
-            ContractId = request.ContractId,
-            MbSpent = request.MbSpent,
-            Date = request.Date
-        };
+            var traffic = request.ToDomain();
 
-        await _repository.UpdateAsync(traffic, cancellationToken);
+            await _repository.UpdateAsync(traffic, cancellationToken);
 
-        return Unit.Value;
+            return new Response<Unit>(Unit.Value, StatusCode.Updated);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Unit>(ex.Message, StatusCode.NotUpdated);
+        }
     }
 }

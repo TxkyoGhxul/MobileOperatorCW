@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Mappers;
+using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
@@ -11,16 +13,17 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, IResp
 
 	public async Task<IResponse<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
 	{
-		User user = new User
+		try
 		{
-			Id = Guid.NewGuid(),
-			Name = request.Name,
-			Surname = request.Surname,
-			MiddleName = request.MiddleName,
-			Adress = request.Adress,
-			Passport = request.Passport
-		};
+			var user = request.ToDomain();
 
-		return await _repository.InsertAsync(user, cancellationToken);
+			var response = await _repository.InsertAsync(user, cancellationToken);
+
+			return new Response<Guid>(response, StatusCode.Created);
+		}
+        catch (Exception ex)
+        {
+            return new Response<Guid>(ex.Message, StatusCode.NotCreated);
+        }
 	}
 }
