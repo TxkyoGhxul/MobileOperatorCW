@@ -3,13 +3,13 @@ using Domain;
 using MediatR;
 
 namespace Application.Commands.UserCommands.UpdateUser;
-public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Unit>
+public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, IResponse<Unit>>
 {
     private readonly IFullRepository<User> _repository;
 
     public UpdateUserCommandHandler(IFullRepository<User> repository) => _repository = repository;
 
-    public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task<IResponse<Unit>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
         User user = new User
         {

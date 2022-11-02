@@ -4,14 +4,14 @@ using MediatR;
 
 namespace Application.Commands.TariffCommands.Create;
 
-public class CreateTariffCommandHandler : IRequestHandler<CreateTariffCommand, Guid>
+public class CreateTariffCommandHandler : IRequestHandler<CreateTariffCommand, IResponse<Guid>>
 {
     private readonly IFullRepository<Tariff> _repository;
 
     public CreateTariffCommandHandler(IFullRepository<Tariff> repository) =>
         _repository = repository;
 
-    public async Task<Guid> Handle(CreateTariffCommand request, CancellationToken cancellationToken)
+    public async Task<IResponse<Guid>> Handle(CreateTariffCommand request, CancellationToken cancellationToken)
     {
         Tariff tariff = new Tariff
         {

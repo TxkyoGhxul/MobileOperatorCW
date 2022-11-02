@@ -3,14 +3,15 @@ using Domain;
 using MediatR;
 
 namespace Application.Commands.TariffTypeCommands.Create;
-public class CreateTariffTypeCommandHandler : IRequestHandler<CreateTariffTypeCommand, Guid>
+public class CreateTariffTypeCommandHandler : 
+    IRequestHandler<CreateTariffTypeCommand, IResponse<Guid>>
 {
     private readonly IFullRepository<TariffType> _repository;
 
     public CreateTariffTypeCommandHandler(IFullRepository<TariffType> repository) =>
         _repository = repository;
 
-    public async Task<Guid> Handle(CreateTariffTypeCommand request, CancellationToken cancellationToken)
+    public async Task<IResponse<Guid>> Handle(CreateTariffTypeCommand request, CancellationToken cancellationToken)
     {
         TariffType tariffType = new TariffType
         {

@@ -5,14 +5,14 @@ using MediatR;
 namespace Application.Commands.InternetTrafficCommands.Update;
 
 public class UpdateInternetTrafficCommandHandler :
-    IRequestHandler<UpdateInternetTrafficCommand, Unit>
+    IRequestHandler<UpdateInternetTrafficCommand, IResponse<Unit>>
 {
     private readonly IFullRepository<InternetTraffic> _repository;
 
     public UpdateInternetTrafficCommandHandler(IFullRepository<InternetTraffic> repository) =>
         _repository = repository;
 
-    public async Task<Unit> Handle(UpdateInternetTrafficCommand request, CancellationToken cancellationToken)
+    public async Task<IResponse<Unit>> Handle(UpdateInternetTrafficCommand request, CancellationToken cancellationToken)
     {
         InternetTraffic traffic = new InternetTraffic
         {

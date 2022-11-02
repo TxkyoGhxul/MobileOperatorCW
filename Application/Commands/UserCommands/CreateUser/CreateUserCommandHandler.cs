@@ -3,13 +3,13 @@ using Domain;
 using MediatR;
 
 namespace Application.Commands.UserCommands.CreateUser;
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
+public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, IResponse<Guid>>
 {
 	private readonly IFullRepository<User> _repository;
 
 	public CreateUserCommandHandler(IFullRepository<User> repository) => _repository = repository;
 
-	public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+	public async Task<IResponse<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
 	{
 		User user = new User
 		{

@@ -4,14 +4,14 @@ using MediatR;
 
 namespace Application.Commands.SMSCommands.Create;
 
-public class CreateSMSCommandHandler : IRequestHandler<CreateSMSCommand, Guid>
+public class CreateSMSCommandHandler : IRequestHandler<CreateSMSCommand, IResponse<Guid>>
 {
     private readonly IFullRepository<SMS> _repository;
 
     public CreateSMSCommandHandler(IFullRepository<SMS> repository) =>
         _repository = repository;
 
-    public async Task<Guid> Handle(CreateSMSCommand request, CancellationToken cancellationToken)
+    public async Task<IResponse<Guid>> Handle(CreateSMSCommand request, CancellationToken cancellationToken)
     {
         SMS sms = new SMS
         {

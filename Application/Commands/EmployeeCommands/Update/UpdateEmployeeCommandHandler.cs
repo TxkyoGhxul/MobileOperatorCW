@@ -1,25 +1,20 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Mappers;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
 namespace Application.Commands.EmployeeCommands.Update;
-public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand, Unit>
+public class UpdateEmployeeCommandHandler : 
+    IRequestHandler<UpdateEmployeeCommand, IResponse<Unit>>
 {
     private readonly IFullRepository<Employee> _repository;
 
     public UpdateEmployeeCommandHandler(IFullRepository<Employee> repository) =>
         _repository = repository;
 
-    public async Task<Unit> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<IResponse<Unit>> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
     {
-        Employee employee = new Employee
-        {
-            Id = request.Id,
-            Name = request.Name,
-            Surname = request.Surname,
-            MiddleName = request.MiddleName,
-            PositionId = request.PositionId
-        };
+        var employee = request.ToDomain();
 
         await _repository.UpdateAsync(employee, cancellationToken);
 

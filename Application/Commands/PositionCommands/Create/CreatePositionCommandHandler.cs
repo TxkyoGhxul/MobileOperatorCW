@@ -4,7 +4,8 @@ using MediatR;
 
 namespace Application.Commands.PositionCommands.Create;
 
-public class CreatePositionCommandHandler : IRequestHandler<CreatePositionCommand, Guid>
+public class CreatePositionCommandHandler : 
+    IRequestHandler<CreatePositionCommand, IResponse<Guid>>
 {
     private readonly IFullRepository<Position> _repository;
 

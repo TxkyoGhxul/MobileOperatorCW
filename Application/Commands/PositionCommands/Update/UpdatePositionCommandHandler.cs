@@ -4,20 +4,21 @@ using MediatR;
 
 namespace Application.Commands.PositionCommands.Update;
 
-public class UpdatePositionCommandHandler : IRequestHandler<UpdatePositionCommand, Unit>
+public class UpdatePositionCommandHandler : 
+    IRequestHandler<UpdatePositionCommand, IResponse<Unit>>
 {
     private readonly IFullRepository<Position> _repository;
 
     public UpdatePositionCommandHandler(IFullRepository<Position> repository) =>
         _repository = repository;
 
-    public async Task<Unit> Handle(UpdatePositionCommand request, CancellationToken cancellationToken)
+    public async Task<IResponse<Unit>> Handle(UpdatePositionCommand request, CancellationToken cancellationToken)
     {
         Position position = new Position
         {
             Id = request.Id,
             Name = request.Name,
-            Salary = request.Salary
+            Salary = request.Salarys
         };
 
         await _repository.UpdateAsync(position, cancellationToken);

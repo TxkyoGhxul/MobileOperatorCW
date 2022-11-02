@@ -1,5 +1,6 @@
-﻿using MediatR;
+﻿using Application.Interfaces;
+using MediatR;
 
 namespace Application.Commands.EmployeeCommands.Update;
 public record UpdateEmployeeCommand(Guid Id, string Name, string Surname, 
-    string MiddleName, Guid PositionId) : IRequest;
+    string MiddleName, Guid PositionId) : IRequest<IResponse<Unit>>;

@@ -1,27 +1,30 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Mappers;
+using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
 namespace Application.Commands.ContractCommands.Create;
-public class CreateContractCommandHandler : IRequestHandler<CreateContractCommand, Guid>
+public class CreateContractCommandHandler : IRequestHandler<CreateContractCommand, IResponse<Guid>>
 {
     private readonly IFullRepository<Contract> _repository;
 
     public CreateContractCommandHandler(IFullRepository<Contract> repository) =>
         _repository = repository;
 
-    public async Task<Guid> Handle(CreateContractCommand request, CancellationToken cancellationToken)
+    public async Task<IResponse<Guid>> Handle(CreateContractCommand request, CancellationToken cancellationToken)
     {
-        Contract contract = new Contract
+        try
         {
-            Id = Guid.NewGuid(),
-            UserId = request.UserId,
-            EmployeeId = request.EmployeeId,
-            TariffId = request.TariffId,
-            Date = request.Date,
-            PhoneNumber = request.PhoneNumber
-        };
+            var contract = request.ToDomain();
 
-        return await _repository.InsertAsync(contract, cancellationToken);
+            var response = await _repository.InsertAsync(contract, cancellationToken);
+
+            return new Response<Guid>(response, StatusCode.Created);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Guid>(ex.Message, StatusCode.NotCreated);
+        }
     }
 }

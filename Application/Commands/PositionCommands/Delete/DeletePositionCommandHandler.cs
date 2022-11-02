@@ -4,7 +4,8 @@ using MediatR;
 
 namespace Application.Commands.PositionCommands.Delete;
 
-public class DeletePositionCommandHandler : IRequestHandler<DeletePositionCommand, Unit>
+public class DeletePositionCommandHandler : 
+    IRequestHandler<DeletePositionCommand, IResponse<Unit>>
 {
     private readonly IFullRepository<Position> _repository;
 

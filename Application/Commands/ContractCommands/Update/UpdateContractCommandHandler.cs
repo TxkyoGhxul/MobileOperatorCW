@@ -1,29 +1,30 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Mappers;
+using Application.Common.Responses;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 
 namespace Application.Commands.ContractCommands.Update;
-public class UpdateContractCommandHandler : IRequestHandler<UpdateContractCommand, Unit>
+public class UpdateContractCommandHandler : IRequestHandler<UpdateContractCommand, IResponse<Unit>>
 {
     private readonly IFullRepository<Contract> _repository;
 
     public UpdateContractCommandHandler(IFullRepository<Contract> repository) =>
         _repository = repository;
 
-    public async Task<Unit> Handle(UpdateContractCommand request, CancellationToken cancellationToken)
+    public async Task<IResponse<Unit>> Handle(UpdateContractCommand request, CancellationToken cancellationToken)
     {
-        Contract contract = new Contract
+        try
         {
-            Id = request.Id,
-            UserId = request.UserId,
-            EmployeeId = request.EmployeeId,
-            TariffId = request.TariffId,
-            Date = request.Date,
-            PhoneNumber = request.PhoneNumber
-        };
+            var contract = request.ToDomain();
 
-        await _repository.UpdateAsync(contract, cancellationToken);
+            await _repository.UpdateAsync(contract, cancellationToken);
 
-        return Unit.Value;
+            return new Response<Unit>(Unit.Value, StatusCode.Updated);
+        }
+        catch (Exception ex)
+        {
+            return new Response<Unit>(ex.Message, StatusCode.NotUpdated);
+        }
     }
 }
