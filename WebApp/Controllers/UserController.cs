@@ -1,4 +1,5 @@
-﻿using Application.Queries.TariffTypeQueries.GetAll;
+﻿using Application.Common.Responses;
+using Application.Queries.TariffTypeQueries.GetAll;
 using Application.Queries.UserQueries.GetAll;
 using Application.Queries.UserQueries.GetById;
 using MediatR;
@@ -24,8 +25,8 @@ public class UserController : Controller
     {
         var query = new GetTariffTypesQuery();
         var response = await _mediator.Send(query);
-        return response.StatusCode != Application.Common.Responses.Status.Created ?
-            BadRequest(response.Description) : View(response.Data);
+        return response.StatusCode == Status.Ok ?
+            View(response.Data) : BadRequest(response.Description);
     }
 
     [HttpGet]
