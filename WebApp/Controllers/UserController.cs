@@ -3,7 +3,6 @@ using Application.Queries.UserQueries.GetAll;
 using Application.Queries.UserQueries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace WebApp.Controllers;
 public class UserController : Controller
@@ -25,8 +24,7 @@ public class UserController : Controller
     {
         var query = new GetTariffTypesQuery();
         var response = await _mediator.Send(query);
-
-        return response.StatusCode != StatusCode.Created ? 
+        return response.StatusCode != Application.Common.Responses.StatusCode.Created ?
             BadRequest(response.Description) : View(response.Data);
     }
 
