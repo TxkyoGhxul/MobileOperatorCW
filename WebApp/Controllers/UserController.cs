@@ -24,7 +24,7 @@ public class UserController : Controller
     {
         var query = new GetTariffTypesQuery();
         var response = await _mediator.Send(query);
-        return response.StatusCode != Application.Common.Responses.StatusCode.Created ?
+        return response.StatusCode != Application.Common.Responses.Status.Created ?
             BadRequest(response.Description) : View(response.Data);
     }
 

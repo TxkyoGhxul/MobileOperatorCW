@@ -5,21 +5,21 @@ public class Response<T> : IResponse<T>
 {
     public T Data { get; set; }
     public string Description { get; set; }
-    public StatusCode StatusCode { get; set; }
+    public Status StatusCode { get; set; }
 
-    public Response(string description, StatusCode statusCode = StatusCode.BadRequest)
+    public Response(string description, Status statusCode = Status.BadRequest)
     {
         Description = description;
         StatusCode = statusCode;
     }
 
-    public Response(T data, StatusCode statusCode = StatusCode.Ok)
+    public Response(T data, Status statusCode = Status.Ok)
     {
         Data = data;
         StatusCode = statusCode;
     }
 
-    public Response(T data, string description, StatusCode statusCode)
+    public Response(T data, string description, Status statusCode)
     {
         Data = data;
         Description = description;

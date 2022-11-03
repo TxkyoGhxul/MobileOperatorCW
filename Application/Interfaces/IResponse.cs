@@ -7,5 +7,5 @@ public interface IResponse<T>
 
     string Description { get; set; }
 
-    StatusCode StatusCode { get; set; }
+    Status StatusCode { get; set; }
 }

@@ -21,11 +21,11 @@ public class CreateSMSCommandHandler : IRequestHandler<CreateSMSCommand, IRespon
 
             var response = await _repository.InsertAsync(sms, cancellationToken);
 
-            return new Response<Guid>(response, StatusCode.Created);
+            return new Response<Guid>(response, Status.Created);
         }
         catch (Exception ex)
         {
-            return new Response<Guid>(ex.Message, StatusCode.NotCreated);
+            return new Response<Guid>(ex.Message, Status.NotCreated);
         }
     }
 }

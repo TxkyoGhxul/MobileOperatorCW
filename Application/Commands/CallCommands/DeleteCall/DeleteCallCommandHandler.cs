@@ -17,11 +17,11 @@ public class DeleteCallCommandHandler : IRequestHandler<DeleteCallCommand, IResp
         {
             await _repository.DeleteAsync(request.Id, cancellationToken);
 
-            return new Response<Unit>(Unit.Value, StatusCode.Deleted);
+            return new Response<Unit>(Unit.Value, Status.Deleted);
         }
         catch (Exception ex)
         {
-            return new Response<Unit>(ex.Message, StatusCode.NotDeleted);
+            return new Response<Unit>(ex.Message, Status.NotDeleted);
         }
     }
 }

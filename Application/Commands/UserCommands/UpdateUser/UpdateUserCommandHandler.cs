@@ -19,11 +19,11 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, IResp
 
             await _repository.UpdateAsync(user, cancellationToken);
 
-            return new Response<Unit>(Unit.Value, StatusCode.Updated);
+            return new Response<Unit>(Unit.Value, Status.Updated);
         }
         catch (Exception ex)
         {
-            return new Response<Unit>(ex.Message, StatusCode.NotUpdated);
+            return new Response<Unit>(ex.Message, Status.NotUpdated);
         }
     }
 }

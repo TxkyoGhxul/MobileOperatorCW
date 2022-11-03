@@ -20,11 +20,11 @@ public class CreateCallCommandHandler : IRequestHandler<CreateCallCommand, IResp
 
             var response = await _repository.InsertAsync(call, cancellationToken);
 
-            return new Response<Guid>(response, StatusCode.Created);
+            return new Response<Guid>(response, Status.Created);
         }
         catch (Exception ex)
         {
-            return new Response<Guid>(ex.Message, StatusCode.NotCreated);
+            return new Response<Guid>(ex.Message, Status.NotCreated);
         }
     }
 }

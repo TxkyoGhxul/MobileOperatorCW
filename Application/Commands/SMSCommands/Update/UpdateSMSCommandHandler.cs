@@ -21,11 +21,11 @@ public class UpdateSMSCommandHandler : IRequestHandler<UpdateSMSCommand, IRespon
 
             await _repository.UpdateAsync(sms, cancellationToken);
 
-            return new Response<Unit>(Unit.Value, StatusCode.Updated);
+            return new Response<Unit>(Unit.Value, Status.Updated);
         }
         catch (Exception ex)
         {
-            return new Response<Unit>(ex.Message, StatusCode.NotUpdated);
+            return new Response<Unit>(ex.Message, Status.NotUpdated);
         }
     }
 }

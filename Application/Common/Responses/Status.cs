@@ -1,5 +1,5 @@
 ﻿namespace Application.Common.Responses;
-public enum StatusCode
+public enum Status
 {
     Ok = 200,
     Created = 201,
