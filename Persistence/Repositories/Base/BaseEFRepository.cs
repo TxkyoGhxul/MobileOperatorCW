@@ -30,7 +30,7 @@ public class BaseEFRepository<T> : IFullRepository<T> where T : class, IEntity<G
 
     public Guid Insert(T entity)
     {
-        if (entity is null) throw new ArgumentException(nameof(entity));
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
 
         _context.Entry(entity).State = EntityState.Added;
         _context.SaveChanges();
@@ -40,7 +40,7 @@ public class BaseEFRepository<T> : IFullRepository<T> where T : class, IEntity<G
 
     public async Task<Guid> InsertAsync(T entity, CancellationToken cancellationToken = default)
     {
-        if (entity is null) throw new ArgumentException(nameof(entity));
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
 
         _context.Entry(entity).State = EntityState.Added;
         await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
@@ -60,7 +60,7 @@ public class BaseEFRepository<T> : IFullRepository<T> where T : class, IEntity<G
 
     public void Update(T entity)
     {
-        if (entity is null) throw new ArgumentException(nameof(entity));
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
 
         _context.Entry(entity).State = EntityState.Modified;
         _context.SaveChanges();
@@ -68,7 +68,7 @@ public class BaseEFRepository<T> : IFullRepository<T> where T : class, IEntity<G
 
     public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
-        if (entity is null) throw new ArgumentException(nameof(entity));
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
 
         _context.Entry(entity).State = EntityState.Modified;
         await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
