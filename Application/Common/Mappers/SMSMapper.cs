@@ -1,5 +1,6 @@
 ﻿using Application.Commands.SMSCommands.Create;
 using Application.Commands.SMSCommands.Update;
+using Application.ViewModels.IndexViewModels;
 using Domain;
 
 namespace Application.Common.Mappers;
@@ -36,5 +37,16 @@ public static class SMSMapper
             model.Date,
             model.Message
         );
+    }
+
+    public static IndexSMSViewModel ToIndexViewModel(this SMS model)
+    {
+        return model == null ? null : new IndexSMSViewModel
+        {
+            Id = model.Id,
+            Date = model.Date,
+            PhoneNumber = model.Contract.PhoneNumber,
+            Message = model.Message
+        };
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Application.Commands.EmployeeCommands.Create;
 using Application.Commands.EmployeeCommands.Update;
+using Application.ViewModels.IndexViewModels;
 using Domain;
 
 namespace Application.Common.Mappers;
@@ -29,7 +30,7 @@ public static class EmployeeMapper
         };
     }
 
-    public static UpdateEmployeeCommand ToDomain(this Employee model)
+    public static UpdateEmployeeCommand ToUpdateViewModel(this Employee model)
     {
         return model == null ? null : new UpdateEmployeeCommand
         (
@@ -39,5 +40,17 @@ public static class EmployeeMapper
             model.MiddleName,
             model.PositionId
         );
+    }
+
+    public static IndexEmployeeViewModel ToIndexViewModel(this Employee model)
+    {
+        return model == null ? null : new IndexEmployeeViewModel
+        {
+            Id = model.Id,
+            Name = model.Name,
+            Surname = model.Surname,
+            MiddleName = model.MiddleName,
+            Position = model.Position.Name
+        };
     }
 }

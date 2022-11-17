@@ -50,8 +50,11 @@ public class BaseEFRepository<T> : IFullRepository<T> where T : class, IEntity<G
 
     public List<T> SelectAll() => Items.ToList();
 
-    public async Task<List<T>> SelectAllAsync(CancellationToken cancellationToken = default) =>
-        await Items.ToListAsync(cancellationToken).ConfigureAwait(false);
+    public async Task<List<T>> SelectAllAsync(CancellationToken cancellationToken = default)
+    {
+        Thread.Sleep(2000);
+        return await Items.ToListAsync(cancellationToken).ConfigureAwait(false);
+    }
 
     public T SelectById(Guid id) => Items.FirstOrDefault(x => x.Id.Equals(id));
 

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Repositories;
+using Persistence.Repositories.Cached;
 
 namespace Persistence;
 public static class DependencyInjection
@@ -18,7 +19,7 @@ public static class DependencyInjection
             options.UseSqlServer(connectionString);
         });
 
-        services.AddTransient<IMediator, Mediator>();
+        //services.AddTransient<IMediator, Mediator>();
         //services.AddSingleton<ApplicationDbContext>();
 
         //// Services registration
@@ -43,15 +44,20 @@ public static class DependencyInjection
         //services.AddTransient<IAsyncRepository<TariffType>, TariffTypeRepository>();
         //services.AddTransient<IAsyncRepository<User>, UserRepository>();
 
-        services.AddTransient<IFullRepository<Call>, CallRepository>();
-        services.AddTransient<IFullRepository<Contract>, ContractRepository>();
-        services.AddTransient<IFullRepository<Employee>, EmployeeRepository>();
-        services.AddTransient<IFullRepository<InternetTraffic>, InternetTrafficRepository>();
-        services.AddTransient<IFullRepository<Position>, PositionRepository>();
-        services.AddTransient<IFullRepository<SMS>, SMSRepository>();
-        services.AddTransient<IFullRepository<Tariff>, TariffRepository>();
-        services.AddTransient<IFullRepository<TariffType>, TariffTypeRepository>();
-        services.AddTransient<IFullRepository<User>, UserRepository>();
+        services.AddScoped<IFullRepository<Call>, CallRepository>();
+        //services.Decorate<IFullRepository<Call>, CallCachedRepository>();
+
+        services.AddScoped<IFullRepository<Contract>, ContractRepository>();
+        services.AddScoped<IFullRepository<Employee>, EmployeeRepository>();
+        services.AddScoped<IFullRepository<InternetTraffic>, InternetTrafficRepository>();
+        services.AddScoped<IFullRepository<Position>, PositionRepository>();
+        services.AddScoped<IFullRepository<SMS>, SMSRepository>();
+        services.AddScoped<IFullRepository<Tariff>, TariffRepository>();
+
+        services.AddScoped<IFullRepository<TariffType>, TariffTypeRepository>();
+        services.Decorate<IFullRepository<TariffType>, TariffTypeCachedRepository>();
+
+        services.AddScoped<IFullRepository<User>, UserRepository>();
 
 
         //services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(myConnectionString));

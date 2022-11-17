@@ -1,5 +1,6 @@
 ﻿using Application.Commands.TariffCommands.Create;
 using Application.Commands.TariffCommands.Update;
+using Application.ViewModels.IndexViewModels;
 using Domain;
 
 namespace Application.Common.Mappers;
@@ -37,7 +38,7 @@ public static class TariffMapper
         };
     }
 
-    public static UpdateTariffCommand ToDomain(this Tariff model)
+    public static UpdateTariffCommand ToUpdateViewModel(this Tariff model)
     {
         return model == null ? null : new UpdateTariffCommand
         (
@@ -51,5 +52,16 @@ public static class TariffMapper
             model.MbCost,
             model.TariffTypeId
         );
+    }
+
+    public static IndexTariffViewModel ToIndexViewModel(this Tariff model)
+    {
+        return model == null ? null : new IndexTariffViewModel
+        {
+            Id = model.Id,
+            Name = model.Name,
+            Cost = model.Cost,
+            MbCost = model.MbCost
+        };
     }
 }

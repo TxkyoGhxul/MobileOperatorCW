@@ -24,7 +24,9 @@ public class UserController : Controller
     public async Task<IActionResult> TariffTypes()
     {
         var query = new GetTariffTypesQuery();
+
         var response = await _mediator.Send(query);
+
         return response.StatusCode == Status.Ok ?
             View(response.Data) : BadRequest(response.Description);
     }
@@ -43,8 +45,8 @@ public class UserController : Controller
     {
         var query = new GetUsersQuery();
         var allUsers = await _mediator.Send(query);
-        var users = allUsers.Where(x => x.Name.Contains(filterText, StringComparison.InvariantCultureIgnoreCase)).ToList();
-        return View(users);
+        //var users = allUsers.Where(x => x.Name.Contains(filterText, StringComparison.InvariantCultureIgnoreCase)).ToList();
+        return View(allUsers);
     }
 
     //[HttpGet("{id}")]

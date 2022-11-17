@@ -1,6 +1,8 @@
 ﻿using Application.Commands.CallCommands.CreateCall;
 using Application.Commands.CallCommands.UpdateCall;
+using Application.ViewModels.IndexViewModels;
 using Domain;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Application.Common.Mappers;
 public static class CallMapper
@@ -27,7 +29,7 @@ public static class CallMapper
         };
     }
 
-    public static UpdateCallCommand ToUpdateCommand(this Call model)
+    public static UpdateCallCommand ToUpdateViewModel(this Call model)
     {
         return model == null ? null : new UpdateCallCommand
         (
@@ -36,5 +38,16 @@ public static class CallMapper
             model.TimeSpan,
             model.Date
         );
+    }
+
+    public static IndexCallViewModel ToIndexViewModel(this Call model)
+    {
+        return model == null ? null : new IndexCallViewModel
+        {
+            Id = model.Id,
+            PhoneNumber = model.Contract.PhoneNumber,
+            Date = model.Date,
+            TimeSpan = model.TimeSpan
+        };
     }
 }

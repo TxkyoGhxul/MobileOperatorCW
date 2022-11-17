@@ -1,5 +1,6 @@
 ﻿using Application.Commands.UserCommands.CreateUser;
 using Application.Commands.UserCommands.UpdateUser;
+using Application.ViewModels.IndexViewModels;
 using Domain;
 
 namespace Application.Common.Mappers;
@@ -31,7 +32,7 @@ public static class UserMapper
         };
     }
 
-    public static UpdateUserCommand ToDomain(this User model)
+    public static UpdateUserCommand ToUpdateViewModel(this User model)
     {
         return model == null ? null : new UpdateUserCommand
         (
@@ -42,5 +43,17 @@ public static class UserMapper
             model.Adress,
             model.Passport
         );
+    }
+
+    public static IndexUserViewModel ToIndexViewModel(this User model)
+    {
+        return model == null ? null : new IndexUserViewModel
+        {
+            Id = model.Id,
+            Name = model.Name,
+            Surname = model.Surname,
+            MiddleName = model.MiddleName,
+            Passport = model.Passport
+        };
     }
 }

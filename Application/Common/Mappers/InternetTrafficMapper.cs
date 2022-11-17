@@ -1,5 +1,6 @@
 ﻿using Application.Commands.InternetTrafficCommands.Create;
 using Application.Commands.InternetTrafficCommands.Update;
+using Application.ViewModels.IndexViewModels;
 using Domain;
 
 namespace Application.Common.Mappers;
@@ -36,5 +37,16 @@ public static class InternetTrafficMapper
             model.Date,
             model.MbSpent
         );
+    }
+
+    public static IndexInternetTrafficViewModel ToIndexViewModel(this InternetTraffic model)
+    {
+        return model == null ? null : new IndexInternetTrafficViewModel
+        {
+            Id = model.Id,
+            Date = model.Date,
+            PhoneNumber = model.Contract.PhoneNumber,
+            MbSpent = model.MbSpent
+        };
     }
 }

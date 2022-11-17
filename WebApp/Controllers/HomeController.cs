@@ -1,23 +1,11 @@
-﻿using Application.Queries.UserQueries.GetAll;
-using Application.Queries.UserQueries.GetById;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using WebApp.Controllers.Base;
 using WebApp.Models;
 
 namespace WebApp.Controllers;
-public class HomeController : Controller
+public class HomeController : BaseController
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly IMediator _mediator;
-
-    public HomeController(ILogger<HomeController> logger, IMediator mediator)
-    {
-        _logger = logger;
-        _mediator = mediator;
-    }
-
     public IActionResult Index()
     {
         return View();
