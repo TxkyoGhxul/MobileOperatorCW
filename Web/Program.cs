@@ -15,6 +15,7 @@ builder.Services.AddDbContext<AppIdentityDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddRazorPages();
+builder.Services.AddSession();
 
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication();
@@ -45,6 +46,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

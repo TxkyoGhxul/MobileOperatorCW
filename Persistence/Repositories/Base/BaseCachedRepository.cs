@@ -10,7 +10,7 @@ public abstract class BaseCachedRepository<T> : IFullRepository<T> where T : cla
     protected readonly IFullRepository<T> _repository;
     protected readonly IMemoryCache _cache;
 
-    public BaseCachedRepository(IFullRepository<T> repository, IMemoryCache cache, string cacheKey)
+    protected BaseCachedRepository(IFullRepository<T> repository, IMemoryCache cache, string cacheKey)
     {
         _repository = repository;
         _cache = cache;

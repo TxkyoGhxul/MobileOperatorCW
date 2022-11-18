@@ -48,22 +48,22 @@ public static class DependencyInjection
         services.Decorate<IFullRepository<Call>, CallCachedRepository>();
 
         services.AddScoped<IFullRepository<Contract>, ContractRepository>();
-        services.Decorate<IFullRepository<Contract>, ContractRepository>();
+        services.Decorate<IFullRepository<Contract>, ContractCachedRepository>();
 
         services.AddScoped<IFullRepository<Employee>, EmployeeRepository>();
-        services.Decorate<IFullRepository<Employee>, EmployeeRepository>();
+        services.Decorate<IFullRepository<Employee>, EmployeeCachedRepository>();
 
         services.AddScoped<IFullRepository<InternetTraffic>, InternetTrafficRepository>();
-        services.Decorate<IFullRepository<InternetTraffic>, InternetTrafficRepository>();
+        services.Decorate<IFullRepository<InternetTraffic>, InternetTrafficCachedRepository>();
 
         services.AddScoped<IFullRepository<Position>, PositionRepository>();
-        services.Decorate<IFullRepository<Position>, PositionRepository>();
+        services.Decorate<IFullRepository<Position>, PositionCachedRepository>();
 
         services.AddScoped<IFullRepository<SMS>, SMSRepository>();
-        services.Decorate<IFullRepository<SMS>, SMSRepository>();
+        services.Decorate<IFullRepository<SMS>, SMSCachedRepository>();
 
         services.AddScoped<IFullRepository<Tariff>, TariffRepository>();
-        services.Decorate<IFullRepository<Tariff>, TariffRepository>();
+        services.Decorate<IFullRepository<Tariff>, TariffCachedRepository>();
 
         services.AddScoped<IFullRepository<TariffType>, TariffTypeRepository>();
         services.Decorate<IFullRepository<TariffType>, TariffTypeCachedRepository>();
