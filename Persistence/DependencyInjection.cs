@@ -45,19 +45,31 @@ public static class DependencyInjection
         //services.AddTransient<IAsyncRepository<User>, UserRepository>();
 
         services.AddScoped<IFullRepository<Call>, CallRepository>();
-        //services.Decorate<IFullRepository<Call>, CallCachedRepository>();
+        services.Decorate<IFullRepository<Call>, CallCachedRepository>();
 
         services.AddScoped<IFullRepository<Contract>, ContractRepository>();
+        services.Decorate<IFullRepository<Contract>, ContractRepository>();
+
         services.AddScoped<IFullRepository<Employee>, EmployeeRepository>();
+        services.Decorate<IFullRepository<Employee>, EmployeeRepository>();
+
         services.AddScoped<IFullRepository<InternetTraffic>, InternetTrafficRepository>();
+        services.Decorate<IFullRepository<InternetTraffic>, InternetTrafficRepository>();
+
         services.AddScoped<IFullRepository<Position>, PositionRepository>();
+        services.Decorate<IFullRepository<Position>, PositionRepository>();
+
         services.AddScoped<IFullRepository<SMS>, SMSRepository>();
+        services.Decorate<IFullRepository<SMS>, SMSRepository>();
+
         services.AddScoped<IFullRepository<Tariff>, TariffRepository>();
+        services.Decorate<IFullRepository<Tariff>, TariffRepository>();
 
         services.AddScoped<IFullRepository<TariffType>, TariffTypeRepository>();
         services.Decorate<IFullRepository<TariffType>, TariffTypeCachedRepository>();
 
         services.AddScoped<IFullRepository<User>, UserRepository>();
+        services.Decorate<IFullRepository<User>, UserCachedRepository>();
 
 
         //services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(myConnectionString));

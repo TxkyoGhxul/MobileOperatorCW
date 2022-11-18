@@ -1,0 +1,67 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@model (IEnumerable<IdentityUser>, IEnumerable<IdentityRole>)
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h4>Is user: @ViewBag?.IsUser</h4>
+<h4>Is admin: @ViewBag?.IsAdmin</h4>
+<h4>@Model.Item1.Count()</h4>
+<h4>@Model.Item2.Count()</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>Email</td>
+            <td>UserName</td>
+            <td>Id</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Item1)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Id)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Role</td>
+            <td>Normalized name</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Model.Item2)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => role.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => role.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => role.NormalizedName)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
