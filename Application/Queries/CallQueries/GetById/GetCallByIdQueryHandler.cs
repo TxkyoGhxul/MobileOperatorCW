@@ -1,4 +1,5 @@
-﻿using Application.Common.Responses;
+﻿using Application.Common.Exceptions;
+using Application.Common.Responses;
 using Application.Interfaces;
 using Domain;
 using MediatR;

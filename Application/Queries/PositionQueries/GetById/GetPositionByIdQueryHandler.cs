@@ -1,6 +1,7 @@
 ﻿using Application.Common.Responses;
 using Application.Interfaces;
 using Domain;
+using Domain.Base;
 using MediatR;
 
 namespace Application.Queries.PositionQueries.GetById;

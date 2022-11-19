@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Interfaces;
 using Domain.Base;
 using Microsoft.EntityFrameworkCore;
 
@@ -56,10 +57,25 @@ public class BaseEFRepository<T> : IFullRepository<T> where T : class, IEntity<G
         return await Items.ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public T SelectById(Guid id) => Items.FirstOrDefault(x => x.Id.Equals(id));
+    public T SelectById(Guid id)
+    {
+        var entity = Items.FirstOrDefault(x => x.Id.Equals(id));
 
-    public async Task<T> SelectByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
-        await Items.FirstOrDefaultAsync(x => x.Id.Equals(id)).ConfigureAwait(false);
+        if (entity == null)
+            throw new NotFoundException(typeof(T).Name, id);
+
+        return entity;
+    }
+
+    public async Task<T> SelectByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var entity = await Items.FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken).ConfigureAwait(false);
+
+        if (entity == null)
+            throw new NotFoundException(typeof(T).Name, id);
+
+        return entity;
+    }
 
     public void Update(T entity)
     {

@@ -209,6 +209,8 @@ public class PositionController : BaseController
 
     public async Task<IActionResult> Details(Guid id)
     {
+        //try
+        //{
         var query = new GetPositionByIdQuery(id);
 
         var response = await Mediator.Send(query);
@@ -216,5 +218,10 @@ public class PositionController : BaseController
         return response.StatusCode == Status.Ok ?
             View(response.Data) :
             BadRequest(response.Description);
+        //}
+        //catch (Exception ex)
+        //{
+        //    return BadRequest(ex.Message);
+        //}
     }
 }
