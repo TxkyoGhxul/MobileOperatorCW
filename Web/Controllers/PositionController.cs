@@ -8,6 +8,7 @@ using Application.Queries.PositionQueries.GetAll;
 using Application.Queries.PositionQueries.GetById;
 using Application.ViewModels;
 using Application.ViewModels.IndexViewModels;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
 
@@ -63,7 +64,7 @@ public class PositionController : BaseController
     private void ChangeOrderState(PositionOrderState orderState)
     {
         ViewData["IdSort"] = orderState == PositionOrderState.IdAsc ?
-                    PositionOrderState.IdDesc : PositionOrderState.IdAsc;
+            PositionOrderState.IdDesc : PositionOrderState.IdAsc;
 
         ViewData["NameSort"] = orderState == PositionOrderState.NameAsc ?
             PositionOrderState.NameDesc : PositionOrderState.NameAsc;
@@ -132,21 +133,25 @@ public class PositionController : BaseController
 
     #endregion
 
-    public async Task<IActionResult> Edit(Guid? id)
+    public async Task<IActionResult> Edit(Guid id)
     {
-        if (id == null)
-            return BadRequest(nameof(id));
+        try
+        {
+            var query = new GetPositionByIdQuery(id);
 
-        var query = new GetPositionByIdQuery((Guid)id);
+            var response = await Mediator.Send(query);
 
-        var response = await Mediator.Send(query);
+            if (response.StatusCode == Status.NotFound)
+                return NotFound(response.Description);
 
-        if (response.StatusCode == Status.NotFound)
-            return NotFound(response.Description);
+            var viewModel = response.Data.ToUpdateViewModel();
 
-        var viewModel = response.Data.ToUpdateViewModel();
-
-        return View(viewModel);
+            return View(viewModel);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost, ActionName("Edit")]
@@ -186,13 +191,20 @@ public class PositionController : BaseController
 
     public async Task<IActionResult> Delete(Guid id)
     {
-        var query = new GetPositionByIdQuery(id);
+        try
+        {
+            var query = new GetPositionByIdQuery(id);
 
-        var response = await Mediator.Send(query);
+            var response = await Mediator.Send(query);
 
-        return response.StatusCode == Status.Ok ?
-            View(response.Data) :
-            BadRequest(response.Description);
+            return response.StatusCode == Status.Ok ?
+                View(response.Data) :
+                BadRequest(response.Description);
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost, ActionName("Delete")]
@@ -209,8 +221,6 @@ public class PositionController : BaseController
 
     public async Task<IActionResult> Details(Guid id)
     {
-        //try
-        //{
         var query = new GetPositionByIdQuery(id);
 
         var response = await Mediator.Send(query);
@@ -218,10 +228,5 @@ public class PositionController : BaseController
         return response.StatusCode == Status.Ok ?
             View(response.Data) :
             BadRequest(response.Description);
-        //}
-        //catch (Exception ex)
-        //{
-        //    return BadRequest(ex.Message);
-        //}
     }
 }

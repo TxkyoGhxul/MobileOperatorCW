@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Web.Data;
+using Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,11 +43,14 @@ else
     app.UseHsts();
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 app.UseSession();
+
 
 app.UseAuthentication();
 app.UseAuthorization();
