@@ -18,12 +18,17 @@ public class ExceptionHandlingMiddleware
         catch (ValidationException ex)
         {
             await HandleExceptionAsync(httpContext, ex.Message,
-                HttpStatusCode.BadRequest, "Ошибка валидации!");
+                HttpStatusCode.BadRequest, "ValidationContext error!");
+        }
+        catch (ArgumentNullException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex.Message,
+                HttpStatusCode.BadRequest, "Argument cant be null!");
         }
         catch (Exception ex)
         {
             await HandleExceptionAsync(httpContext, ex.Message, 
-                HttpStatusCode.InternalServerError, "Что-то пошло не так!");
+                HttpStatusCode.InternalServerError, "Something went wrong!");
         }
     }
 

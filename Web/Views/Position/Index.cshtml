@@ -1,5 +1,6 @@
 ﻿@using Application.ViewModels
 @using Application.ViewModels.IndexViewModels
+@using Web.Helpers
 
 @model IndexViewModel<IndexPositionViewModel>
 
@@ -15,100 +16,17 @@
 
 <h4>Page: @Model.PageViewModel.PageNumber / @Model.PageViewModel.TotalPages</h4>
 
-@if (Model.PageViewModel.HasPreviousPage)
-{
-    <a asp-action="Index"
-   asp-route-page="@(1)"
-   asp-route-pageSize="@Model.PageViewModel.PageSize"
-   class="btn btn-outline-dark">
-        <i class="glyphicon glyphicon-chevron-left"></i>
-        На первую страницу
-    </a>
-}
-
-@if (Model.PageViewModel.HasPreviousPage)
-{
-    <a asp-action="Index"
-   asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
-   asp-route-pageSize="@Model.PageViewModel.PageSize"
-   class="btn btn-outline-dark">
-        <i class="glyphicon glyphicon-chevron-left"></i>
-        Назад
-    </a>
-}
-
-@if (Model.PageViewModel.HasNextPage)
-{
-    <a asp-action="Index"
-   asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
-   asp-route-pageSize="@Model.PageViewModel.PageSize"
-   class="btn btn-outline-dark">
-        Вперед
-        <i class="glyphicon glyphicon-chevron-right"></i>
-    </a>
-}
-
-@if (Model.PageViewModel.HasNextPage)
-{
-    <a asp-action="Index"
-   asp-route-page="@Model.PageViewModel.TotalPages"
-   asp-route-pageSize="@Model.PageViewModel.PageSize"
-   class="btn btn-outline-dark">
-        На последнюю страницу
-        <i class="glyphicon glyphicon-chevron-right"></i>
-    </a>
-}
-
-<form asp-action="Index">
-    <label class="control-label">Введите номер страницы</label>
-    @*<div class="col-md-10">*@
-    <input type="number"
-           width="20"
-           min="@(1)"
-           max="@Model.PageViewModel.TotalPages"
-           name="page"
-           value="@Model.PageViewModel.PageNumber" />
-    <label class="control-label">Введите размер страницы</label>
-    <input type="number"
-           width="20"
-           min="@(1)"
-           name="pageSize"
-           value="@Model.PageViewModel.PageSize" />
-    <br />
-    <br />
-    <label class="control-label">Введите фильтр</label>
-    <input type="text"
-           name="filter"
-           value="@ViewData["Filter"]?.ToString()" />
-    <input type="submit" value="Найти" class="btn btn-primary" />
-    <a asp-action="Index"
-       asp-route-resetFilter="@true"
-       asp-route-page="@Model.PageViewModel.PageNumber"
-       asp-route-pageSize="@Model.PageViewModel.PageSize"
-       class="btn btn-danger">
-        <i class="glyphicon glyphicon-chevron-left"></i>
-        Сброс фильтра
-    </a>
-</form>
+@await Html.PartialAsync("_IndexPagesButtons", Model.PageViewModel)
+@await Html.PartialAsync("_FilterForIndexPages", Model.PageViewModel)
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                <a asp-action="Index"
-                   asp-route-orderState="@ViewBag.NameSort"
-                   asp-route-page="@Model.PageViewModel.PageNumber"
-                   asp-route-pageSize="@Model.PageViewModel.PageSize">
-                    Name
-                </a>
+                @await Html.PartialAsync("_ChangeTableOrder", ("Name", Model.PageViewModel, ViewBag.NameSort))
             </th>
             <th>
-                <a asp-action="Index"
-                   asp-route-orderState="@ViewBag.SalarySort"
-                   asp-route-page="@Model.PageViewModel.PageNumber"
-                   asp-route-pageSize="@Model.PageViewModel.PageSize">
-                    Salary
-                </a>
+                @await Html.PartialAsync("_ChangeTableOrder", ("Salary", Model.PageViewModel, ViewBag.SalarySort))
             </th>
             <th></th>
         </tr>
@@ -124,9 +42,7 @@
                     @Html.DisplayFor(modelItem => item.Salary)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">Редактировать</a>    
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Подробнее</a>   
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Удалить</a>
+                    @await Html.PartialAsync("_ActionsForRowsOnIndexPages", item.Id)
                 </td>
             </tr>
         }
