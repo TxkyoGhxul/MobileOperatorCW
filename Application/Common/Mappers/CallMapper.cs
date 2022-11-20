@@ -45,7 +45,7 @@ public static class CallMapper
         return model == null ? null : new IndexCallViewModel
         {
             Id = model.Id,
-            PhoneNumber = model.Contract.PhoneNumber,
+            //PhoneNumber = model.Contract.PhoneNumber,
             Date = model.Date,
             TimeSpan = model.TimeSpan
         };
