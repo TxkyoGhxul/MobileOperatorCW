@@ -1,0 +1,36 @@
+﻿@using Application.Commands.TariffTypeCommands.Update
+
+@model UpdateTariffTypeCommand
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>Tariff Type</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="Id" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Id)
+            </div>
+        </div>
+        <br />  
+        <div class="form-group">
+            @*<label asp-for="Name" class="col-md-2 control-label"></label>*@
+            @Html.DisplayNameFor(model => model.Name)
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <br />  
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Сохранить" class="btn btn-success"/>
+            </div>
+            <a asp-action="Index" class="btn btn-secondary">Назад</a>
+        </div>
+    </div>
+</form>
