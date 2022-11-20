@@ -1,0 +1,34 @@
+﻿@using Application.ViewModels
+
+@model PageViewModel
+
+<form asp-action="Index">
+    <label class="control-label">Введите номер страницы</label>
+    <input type="number"
+           width="20"
+           min="@(1)"
+           max="@Model.TotalPages"
+           name="page"
+           value="@Model.PageNumber" />
+    <label class="control-label">Введите размер страницы</label>
+    <input type="number"
+           width="20"
+           min="@(1)"
+           name="pageSize"
+           value="@Model.PageSize" />
+    <br />
+    <br />
+    <label class="control-label">Введите фильтр</label>
+    <input type="text"
+           name="filter"
+           value="@ViewData["Filter"]?.ToString()" />
+    <input type="submit" value="Найти" class="btn btn-primary" />
+    <a asp-action="Index"
+       asp-route-resetFilter="@true"
+       asp-route-page="@Model.PageNumber"
+       asp-route-pageSize="@Model.PageSize"
+       class="btn btn-danger">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Сброс фильтра
+    </a>
+</form>

@@ -1,0 +1,11 @@
+﻿@using Application.ViewModels
+
+@model PageViewModel
+
+<a asp-action="Index"
+   asp-route-page="@Model.TotalPages"
+   asp-route-pageSize="@Model.PageSize"
+   class="btn btn-outline-dark">
+        На последнюю страницу
+        <i class="glyphicon glyphicon-chevron-right"></i>
+</a>

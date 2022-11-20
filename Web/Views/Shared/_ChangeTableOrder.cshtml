@@ -1,0 +1,10 @@
+﻿@using Application.ViewModels
+
+@model (string name, PageViewModel pageViewModel, dynamic orderState)
+
+<a asp-action="Index"
+    asp-route-orderState="@Model.orderState"
+    asp-route-page="@Model.pageViewModel.PageNumber"
+    asp-route-pageSize="@Model.pageViewModel.PageSize">
+    @Model.name
+</a>

@@ -1,0 +1,11 @@
+﻿@using Application.ViewModels
+
+@model PageViewModel
+
+<a asp-action="Index"
+   asp-route-page="@(1)"
+   asp-route-pageSize="@Model.PageSize"
+   class="btn btn-outline-dark">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        На первую страницу
+</a>

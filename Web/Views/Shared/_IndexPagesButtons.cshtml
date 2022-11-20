@@ -1,0 +1,15 @@
+﻿@using Application.ViewModels
+
+@model PageViewModel
+
+@if (Model.HasPreviousPage)
+{
+    @await Html.PartialAsync("_ToFirstPageButton", Model)
+    @await Html.PartialAsync("_ToPreviousPageButton", Model)
+}
+
+@if (Model.HasNextPage)
+{
+    @await Html.PartialAsync("_ToNextPageButton", Model)
+    @await Html.PartialAsync("_ToLastPageButton", Model)
+}
