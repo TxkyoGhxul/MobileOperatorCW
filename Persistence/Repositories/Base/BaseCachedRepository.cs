@@ -17,7 +17,7 @@ public abstract class BaseCachedRepository<T> : IFullRepository<T> where T : cla
         CACHE_KEY = cacheKey;
     }
 
-    public IQueryable<T> Items => _repository.Items;
+    public IQueryable<T> AllItems => _repository.AllItems;
 
     public virtual void Delete(Guid id)
     {

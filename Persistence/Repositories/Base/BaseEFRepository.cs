@@ -15,7 +15,8 @@ public class BaseEFRepository<T> : IFullRepository<T> where T : class, IEntity<G
         _set = _context.Set<T>();
     }
 
-    public virtual IQueryable<T> Items => _set;
+    public virtual IQueryable<T> AllItems => _set;
+    public virtual IQueryable<T> ItemsForDetails => _set;
 
     public void Delete(Guid id)
     {
@@ -49,17 +50,17 @@ public class BaseEFRepository<T> : IFullRepository<T> where T : class, IEntity<G
         return entity.Id;
     }
 
-    public List<T> SelectAll() => Items.ToList();
+    public List<T> SelectAll() => AllItems.ToList();
 
     public async Task<List<T>> SelectAllAsync(CancellationToken cancellationToken = default)
     {
         //Thread.Sleep(2000);
-        return await Items.ToListAsync(cancellationToken).ConfigureAwait(false);
+        return await AllItems.ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public T SelectById(Guid id)
     {
-        var entity = Items.FirstOrDefault(x => x.Id.Equals(id));
+        var entity = ItemsForDetails.FirstOrDefault(x => x.Id.Equals(id));
 
         if (entity == null)
             throw new NotFoundException(typeof(T).Name, id);
@@ -69,7 +70,9 @@ public class BaseEFRepository<T> : IFullRepository<T> where T : class, IEntity<G
 
     public async Task<T> SelectByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await Items.FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken).ConfigureAwait(false);
+        var entity = await ItemsForDetails
+            .FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken)
+            .ConfigureAwait(false);
 
         if (entity == null)
             throw new NotFoundException(typeof(T).Name, id);
