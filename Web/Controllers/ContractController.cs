@@ -13,17 +13,13 @@ using Application.ViewModels;
 using Application.ViewModels.IndexViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Text;
 using Web.Controllers.Base;
 
 namespace Web.Controllers;
 public class ContractController : BaseController
 {
-    private readonly ControllerConstraints _constraints;
-
-    public ContractController()
+    public ContractController() : base(nameof(ContractController))
     {
-        _constraints = new ControllerConstraints(nameof(ContractController));
     }
 
     public async Task<IActionResult> Index(string? filter, int? page, int? pageSize,
@@ -44,7 +40,7 @@ public class ContractController : BaseController
         filter ??= GetFilterFromSessionOrSetDefaultValue();
         page ??= GetCurrentPageFromSessionOrSetDefaultValue();
         pageSize ??= GetPageSizeFromSessionOrSetDefaultValue();
-        orderState ??= GetOrderStateFromSessionOrSetDefaultValue();
+        orderState ??= GetOrderStateFromSessionOrSetDefaultValue<ContractOrderState>();
 
         ViewData["Filter"] = filter;
 
@@ -107,51 +103,9 @@ public class ContractController : BaseController
         };
         return contracts;
     }
-
-    private void RewriteValuesInSession(string filter, int page, int pageSize,
-        ContractOrderState state)
-    {
-        HttpContext.Session.Remove(_constraints.INDEX_CURRENT_PAGE);
-        HttpContext.Session.Remove(_constraints.INDEX_PAGE_SIZE);
-        HttpContext.Session.Remove(_constraints.INDEX_ORDER_STATE);
-        HttpContext.Session.Remove(_constraints.INDEX_TEXT_FILTER_KEY);
-        HttpContext.Session.SetString(_constraints.INDEX_CURRENT_PAGE, page.ToString());
-        HttpContext.Session.SetString(_constraints.INDEX_PAGE_SIZE, pageSize.ToString());
-        HttpContext.Session.SetString(_constraints.INDEX_ORDER_STATE, state.ToString());
-        HttpContext.Session.SetString(_constraints.INDEX_TEXT_FILTER_KEY, filter);
-    }
-
-    private string GetFilterFromSessionOrSetDefaultValue()
-    {
-        return HttpContext.Session.Keys.Contains(_constraints.INDEX_TEXT_FILTER_KEY) ?
-            HttpContext.Session.GetString(_constraints.INDEX_TEXT_FILTER_KEY) :
-            string.Empty;
-    }
-
-    private int GetCurrentPageFromSessionOrSetDefaultValue()
-    {
-        return HttpContext.Session.Keys.Contains(_constraints.INDEX_CURRENT_PAGE) ?
-            Convert.ToInt32(HttpContext.Session.GetString(_constraints.INDEX_CURRENT_PAGE)) :
-            PageViewModel.DEFAULT_CURRENT_PAGE;
-    }
-
-    private int GetPageSizeFromSessionOrSetDefaultValue()
-    {
-        return HttpContext.Session.Keys.Contains(_constraints.INDEX_PAGE_SIZE) ?
-            Convert.ToInt32(HttpContext.Session.GetString(_constraints.INDEX_PAGE_SIZE)) :
-            PageViewModel.DEFAULT_PAGE_SIZE;
-    }
-
-    private ContractOrderState GetOrderStateFromSessionOrSetDefaultValue()
-    {
-        return HttpContext.Session.Keys.Contains(_constraints.INDEX_ORDER_STATE) ?
-            (ContractOrderState)Enum.Parse(typeof(ContractOrderState),
-                HttpContext.Session.GetString(_constraints.INDEX_ORDER_STATE)) :
-            ContractOrderState.IdAsc;
-    }
-
     #endregion
 
+    [ResponseCache(Duration = 300)]
     public async Task<IActionResult> Create()
     {
         var tariffs = await Mediator.Send(new GetTariffsQuery());
@@ -245,7 +199,6 @@ public class ContractController : BaseController
             ViewData["Users"] = new SelectList(users.Data.OrderBy(x => x.Surname), "Id", "Surname");
 
         return View(response.Data.ToUpdateViewModel());
-
     }
 
     [HttpPost, ActionName("Edit")]
