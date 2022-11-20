@@ -1,6 +1,6 @@
-﻿@using Application.Commands.ContractCommands.Update
+﻿@using Application.Commands.EmployeeCommands.Update
 
-@model UpdateContractCommand
+@model UpdateEmployeeCommand
 
 @{
     ViewData["Title"] = "Edit";
@@ -8,7 +8,7 @@
 
 <h1>Edit</h1>
 
-<h4>Contract</h4>
+<h4>Employee</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,21 +18,22 @@
                 @Html.DisplayFor(model => model.Id)
             </div>
             <div class="form-group">
-                <label asp-for="TariffId" class="control-label"></label>
-                @Html.DropDownListFor(model => model.TariffId, ViewBag.Tariffs as SelectList)
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EmployeeId" class="control-label"></label>
-                @Html.DropDownListFor(model => model.EmployeeId, ViewBag.Employees as SelectList)
+                <label asp-for="Surname" class="control-label"></label>
+                <input asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                @Html.DropDownListFor(model => model.UserId, ViewBag.Users as SelectList)
+                <label asp-for="MiddleName" class="control-label"></label>
+                <input asp-for="MiddleName" class="form-control" />
+                <span asp-validation-for="MiddleName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                @Html.DropDownListFor(model => model.PositionId, ViewBag.Positions as SelectList)
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

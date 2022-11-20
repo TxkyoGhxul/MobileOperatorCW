@@ -1,0 +1,56 @@
+﻿@using Application.ViewModels
+@using Application.ViewModels.IndexViewModels
+@using Web.Helpers
+
+@model IndexViewModel<IndexInternetTrafficViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<h4>Page: @Model.PageViewModel.PageNumber / @Model.PageViewModel.TotalPages</h4>
+
+@await Html.PartialAsync("_IndexPagesButtons", Model.PageViewModel)
+@await Html.PartialAsync("_FilterForIndexPages", Model.PageViewModel)
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @await Html.PartialAsync("_ChangeTableOrder", ("Date", Model.PageViewModel, ViewBag.DateSort))
+            </th>
+            <th>
+                @await Html.PartialAsync("_ChangeTableOrder", ("Mb spent", Model.PageViewModel, ViewBag.MbSpentSort))
+            </th>
+            @*<th>
+                @await Html.PartialAsync("_ChangeTableOrder", ("Phone Number", Model.PageViewModel, ViewBag.PhoneNumberSort))
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+                <td>
+                    @item.Date.ToShortDateString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MbSpent)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>*@
+                <td>
+                    @await Html.PartialAsync("_ActionsForRowsOnIndexPages", item.Id)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

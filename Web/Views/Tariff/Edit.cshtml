@@ -1,0 +1,73 @@
+﻿@using Application.Commands.TariffCommands.Update
+
+@model UpdateTariffCommand
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Tariff</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @Html.DisplayFor(model => model.Id)
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cost" class="control-label"></label>
+                <input asp-for="Cost" class="form-control" />
+                <span asp-validation-for="Cost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LocalCost" class="control-label"></label>
+                <input asp-for="LocalCost" class="form-control" />
+                <span asp-validation-for="LocalCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TownCost" class="control-label"></label>
+                <input asp-for="TownCost" class="form-control" />
+                <span asp-validation-for="TownCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryCost" class="control-label"></label>
+                <input asp-for="CountryCost" class="form-control" />
+                <span asp-validation-for="CountryCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SMSCost" class="control-label"></label>
+                <input asp-for="SMSCost" class="form-control" />
+                <span asp-validation-for="SMSCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MbCost" class="control-label"></label>
+                <input asp-for="MbCost" class="form-control" />
+                <span asp-validation-for="MbCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @Html.DropDownListFor(model => model.TariffTypeId, ViewBag.TariffTypes as SelectList)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
