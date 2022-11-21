@@ -9,11 +9,14 @@ using Application.Queries.EmployeeQueries.GetById;
 using Application.Queries.PositionQueries.GetAll;
 using Application.ViewModels;
 using Application.ViewModels.IndexViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Web.Controllers.Base;
 
 namespace Web.Controllers;
+
+[Authorize(Roles = "Admin, User")]
 public class EmployeeController : BaseController
 {
     public EmployeeController() : base(nameof(PositionController))
@@ -98,6 +101,7 @@ public class EmployeeController : BaseController
     }
     #endregion
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Edit(Guid? id)
     {
         ArgumentNullException.ThrowIfNull(id, nameof(id));
@@ -137,6 +141,7 @@ public class EmployeeController : BaseController
         return View(vm);
     }
 
+    [Authorize(Roles = "Admin")]
     [ResponseCache(Duration = 300)]
     public async Task<IActionResult> Create()
     {
@@ -166,6 +171,7 @@ public class EmployeeController : BaseController
         return View(vm);
     }
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(Guid? id)
     {
         ArgumentNullException.ThrowIfNull(id, nameof(id));

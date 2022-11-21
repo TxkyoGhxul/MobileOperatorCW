@@ -9,10 +9,13 @@ using Application.Queries.PositionQueries.GetById;
 using Application.ViewModels;
 using Application.ViewModels.IndexViewModels;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
 
 namespace Web.Controllers;
+
+[Authorize(Roles = "Admin, User")]
 public class PositionController : BaseController
 {
     public PositionController() : base(nameof(PositionController))
@@ -87,6 +90,7 @@ public class PositionController : BaseController
     }
     #endregion
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Edit(Guid? id)
     {
         ArgumentNullException.ThrowIfNull(id, nameof(id));
@@ -117,6 +121,7 @@ public class PositionController : BaseController
         return View(vm);
     }
 
+    [Authorize(Roles = "Admin")]
     [ResponseCache(Duration = 300)]
     public async Task<IActionResult> Create()
     {
@@ -137,6 +142,7 @@ public class PositionController : BaseController
         return View(vm);
     }
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(Guid? id)
     {
         ArgumentNullException.ThrowIfNull(id, nameof(id));

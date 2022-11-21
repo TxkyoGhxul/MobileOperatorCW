@@ -9,10 +9,13 @@ using Application.Queries.TariffTypeQueries.GetAll;
 using Application.Queries.TariffTypeQueries.GetById;
 using Application.ViewModels;
 using Application.ViewModels.IndexViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
 
 namespace Web.Controllers;
+
+[Authorize(Roles = "Admin, User")]
 public class TariffTypeController : BaseController
 {
     public TariffTypeController() : base(nameof(TariffTypeController))
@@ -82,6 +85,7 @@ public class TariffTypeController : BaseController
     }
     #endregion
 
+    [Authorize(Roles = "Admin")]
     [ResponseCache(Duration = 300)]
     public async Task<IActionResult> Create()
     {
@@ -113,6 +117,7 @@ public class TariffTypeController : BaseController
                View(response.Data) : NotFound();
     }
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(Guid? id)
     {
         ArgumentNullException.ThrowIfNull(id, nameof(id));
@@ -138,6 +143,7 @@ public class TariffTypeController : BaseController
             RedirectToAction("Index") : BadRequest("Something went wrong");
     }
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Edit(Guid? id)
     {
         ArgumentNullException.ThrowIfNull(id, nameof(id));

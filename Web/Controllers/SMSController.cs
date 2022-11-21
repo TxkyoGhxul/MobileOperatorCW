@@ -9,11 +9,14 @@ using Application.Queries.SMSQueries.GetAll;
 using Application.Queries.SMSQueries.GetById;
 using Application.ViewModels;
 using Application.ViewModels.IndexViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Web.Controllers.Base;
 
 namespace Web.Controllers;
+
+[Authorize(Roles = "Admin, User")]
 public class SMSController : BaseController
 {
     public SMSController() : base(nameof(SMSController))
@@ -93,6 +96,7 @@ public class SMSController : BaseController
     }
     #endregion
 
+    [Authorize(Roles = "Admin")]
     [ResponseCache(Duration = 300)]
     public async Task<IActionResult> Create()
     {
@@ -129,6 +133,7 @@ public class SMSController : BaseController
                View(response.Data) : NotFound();
     }
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(Guid? id)
     {
         ArgumentNullException.ThrowIfNull(id, nameof(id));
@@ -154,6 +159,7 @@ public class SMSController : BaseController
             RedirectToAction("Index") : BadRequest("Something went wrong");
     }
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Edit(Guid? id)
     {
         ArgumentNullException.ThrowIfNull(id, nameof(id));

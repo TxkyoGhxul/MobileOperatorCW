@@ -1,8 +1,10 @@
 ﻿using Application.ViewModels.AccountViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
+[Authorize(Roles = "Admin")]
 public class AccountController : Controller
 {
     private readonly UserManager<IdentityUser> _userManager;

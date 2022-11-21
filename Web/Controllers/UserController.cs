@@ -1,18 +1,20 @@
-﻿using Application.Common.Mappers;
+﻿using Application.Commands.UserCommands.CreateUser;
+using Application.Commands.UserCommands.DeleteUser;
+using Application.Commands.UserCommands.UpdateUser;
+using Application.Common.Mappers;
 using Application.Common.OrderStates;
 using Application.Common.Responses;
 using Application.Queries.UserQueries.GetAll;
-using Application.ViewModels.IndexViewModels;
+using Application.Queries.UserQueries.GetById;
 using Application.ViewModels;
+using Application.ViewModels.IndexViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
-using Application.Queries.UserQueries.GetById;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Application.Commands.UserCommands.UpdateUser;
-using Application.Commands.UserCommands.CreateUser;
-using Application.Commands.UserCommands.DeleteUser;
 
 namespace Web.Controllers;
+
+[Authorize(Roles = "Admin, User")]
 public class UserController : BaseController
 {
     public UserController() : base(nameof(UserController))
@@ -97,6 +99,7 @@ public class UserController : BaseController
     }
     #endregion
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Edit(Guid? id)
     {
         ArgumentNullException.ThrowIfNull(id, nameof(id));
@@ -123,6 +126,7 @@ public class UserController : BaseController
         return View(vm);
     }
 
+    [Authorize(Roles = "Admin")]
     [ResponseCache(Duration = 300)]
     public async Task<IActionResult> Create()
     {
@@ -143,6 +147,7 @@ public class UserController : BaseController
         return View(vm);
     }
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(Guid? id)
     {
         ArgumentNullException.ThrowIfNull(id, nameof(id));
