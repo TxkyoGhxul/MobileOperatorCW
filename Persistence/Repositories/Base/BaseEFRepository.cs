@@ -54,7 +54,7 @@ public class BaseEFRepository<T> : IFullRepository<T> where T : class, IEntity<G
 
     public async Task<List<T>> SelectAllAsync(CancellationToken cancellationToken = default)
     {
-        //Thread.Sleep(2000);
+        Thread.Sleep(2000);
         return await AllItems.ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 
