@@ -33,6 +33,16 @@ public class Contract : BaseEntity
     [NotMapped]
     public int CountSMS => SMSs.Count;
 
+    public override bool Equals(object? obj)
+    {
+        return obj is Contract contract &&
+               Date == contract.Date &&
+               PhoneNumber == contract.PhoneNumber &&
+               UserId.Equals(contract.UserId) &&
+               EmployeeId.Equals(contract.EmployeeId) &&
+               TariffId.Equals(contract.TariffId);
+    }
+
     public override string ToString()
     {
         return $"Id: {Id}. User Id: {UserId}. Employee: {EmployeeId}. " +

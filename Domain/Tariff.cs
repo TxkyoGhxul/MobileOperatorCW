@@ -17,6 +17,19 @@ public class Tariff : NamedEntity
 
     public virtual List<Contract> Contracts { get; set; }
 
+    public override bool Equals(object? obj)
+    {
+        return obj is Tariff tariff &&
+               Name == tariff.Name &&
+               Cost == tariff.Cost &&
+               LocalCost == tariff.LocalCost &&
+               TownCost == tariff.TownCost &&
+               CountryCost == tariff.CountryCost &&
+               SMSCost == tariff.SMSCost &&
+               MbCost == tariff.MbCost &&
+               TariffTypeId.Equals(tariff.TariffTypeId);
+    }
+
     public override string ToString()
     {
         return $"Id: {Id}. Name: {Name}. Cost: {Cost}. LocalCost: {LocalCost}. " +

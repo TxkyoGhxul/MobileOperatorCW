@@ -15,7 +15,7 @@ using Web.Controllers.Base;
 
 namespace Web.Controllers;
 
-[Authorize(Roles = "Admin, User")]
+[Authorize(Roles = "Admin,User")]
 public class PositionController : BaseController
 {
     public PositionController() : base(nameof(PositionController))

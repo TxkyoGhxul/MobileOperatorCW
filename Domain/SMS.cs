@@ -12,6 +12,14 @@ public class SMS : BaseEntity
 
     public DateTime Date { get; set; }
 
+    public override bool Equals(object? obj)
+    {
+        return obj is SMS sMS &&
+               ContractId.Equals(sMS.ContractId) &&
+               Message == sMS.Message &&
+               Date == sMS.Date;
+    }
+
     public override string ToString()
     {
         return $"Id: {Id}. Message: {Message}. Date: {Date}";

@@ -12,6 +12,14 @@ public class InternetTraffic : BaseEntity
 
     public int MbSpent { get; set; }
 
+    public override bool Equals(object? obj)
+    {
+        return obj is InternetTraffic traffic &&
+               ContractId.Equals(traffic.ContractId) &&
+               Date == traffic.Date &&
+               MbSpent == traffic.MbSpent;
+    }
+
     public override string ToString()
     {
         return $"Id: {Id}. Date: {Date.ToShortDateString()}. Mb spent: {MbSpent}";
